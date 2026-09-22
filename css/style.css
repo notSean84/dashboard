@@ -20,7 +20,8 @@ body {
 }
 
 .dashboard-header {
-    padding: 32px 24px 8px;
+    padding: 32px 24px ;
+    height: 10vh;
 }
 
 .dashboard-header h1 {
@@ -29,15 +30,16 @@ body {
 }
 
 .tile-grid {
-    width: 50vw;
-    margin: auto auto;
-    display: grid;
-    /*    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); */
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
-    gap: 16px;
-    place-items: center;
+  height: 90vh;
 
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 250px);
+  gap: 20px;
+
+  place-content: center;
+
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .tile {
@@ -51,6 +53,13 @@ body {
     flex-direction: column;
     gap: 8px;
     transition: transform 0.15s ease;
+}
+
+.title-img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius);
+    object-fit: cover;
 }
 
 .tile:hover {
