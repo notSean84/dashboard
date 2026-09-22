@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wunschliste</title>
+<link rel="stylesheet" href="../../css/style.css">
+<style>
+    .container { max-width: 640px; margin: 0 auto; padding: 24px; }
+    .back-link { display: inline-block; margin-bottom: 16px; color: var(--text-muted); text-decoration: none; }
+    form { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+    input, select { padding: 8px; border: 1px solid #ddd; border-radius: 8px; }
+    input[name="titel"] { flex: 1; min-width: 160px; }
+    button { padding: 8px 14px; border: none; border-radius: 8px; background: var(--accent); color: #fff; cursor: pointer; }
+    ul { list-style: none; padding: 0; }
+    li { background: var(--card-bg); border-radius: 10px; padding: 12px 16px; margin-bottom: 8px; box-shadow: var(--shadow); display: flex; justify-content: space-between; align-items: center; }
+    li.erledigt { opacity: 0.5; text-decoration: line-through; }
+    .prio-1 { border-left: 4px solid #e5484d; }
+    .prio-2 { border-left: 4px solid #f5a623; }
+    .prio-3, .prio-4, .prio-5 { border-left: 4px solid #cfd2d6; }
+    .actions button { background: none; color: var(--text-muted); font-size: 0.9rem; }
+</style>
+</head>
+<body>
+<div class="container">
+    <a class="back-link" href="../../index.html">&larr; Dashboard</a>
+    <h1>Wunschliste</h1>
+
+    <form id="add-form">
+        <input type="text" name="titel" placeholder="Was moechtest du kaufen?" required>
+        <select name="prioritaet">
+            <option value="1">Prio 1 (hoch)</option>
+            <option value="2">Prio 2</option>
+            <option value="3" selected>Prio 3</option>
+            <option value="4">Prio 4</option>
+            <option value="5">Prio 5 (niedrig)</option>
+        </select>
+        <button type="submit">Hinzufuegen</button>
+    </form>
+
+    <ul id="list"></ul>
+</div>
+
+<script src="wunschliste.js"></script>
+</body>
+</html>

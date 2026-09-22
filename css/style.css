@@ -1,0 +1,66 @@
+:root {
+    --bg: #f4f5f7;
+    --card-bg: #ffffff;
+    --text: #1c1c1e;
+    --text-muted: #6b6b70;
+    --accent: #2f6fed;
+    --radius: 14px;
+    --shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+
+.dashboard-header {
+    padding: 32px 24px 8px;
+}
+
+.dashboard-header h1 {
+    margin: 0;
+    font-size: 1.6rem;
+}
+
+.tile-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+    padding: 24px;
+}
+
+.tile {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 20px;
+    text-decoration: none;
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: transform 0.15s ease;
+}
+
+.tile:hover {
+    transform: translateY(-2px);
+}
+
+.tile .icon {
+    font-size: 1.8rem;
+}
+
+.tile h2 {
+    margin: 0;
+    font-size: 1.05rem;
+}
+
+.tile p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
