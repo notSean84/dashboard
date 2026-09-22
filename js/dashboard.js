@@ -1,28 +1,28 @@
 // Zentrale Liste der Tools. Neues Tool = neuer Eintrag + neuer Ordner in /tools.
 const TOOLS = [
     {
-        titel: "Wunschliste",
-        beschreibung: "Dinge, die ich kaufen moechte, priorisiert",
-        icon: "\u2B50",
-        url: "tools/wunschliste/index.html"
-    },
-    {
         titel: "Einkaufsliste",
         beschreibung: "Familien-Einkaufsliste mit Menge, Ort etc.",
-        icon: "\uD83D\uDED2",
-        url: "tools/einkaufsliste/index.html"
-    },
-    {
-        titel: "Motorrad-Wartung",
-        beschreibung: "Wartungslog und Kilometerstand-Tracking",
-        icon: "\uD83C\uDFCD\uFE0F",
-        url: "tools/motorrad-wartung/index.html"
+        url: "tools/einkaufsliste/index.html",
+        image: "tools/einkaufsliste/img.jpg"
     },
     {
         titel: "Rekrutierung",
         beschreibung: "Fortschritt fuer die Vorbereitung tracken",
-        icon: "\uD83D\uDCAA",
-        url: "tools/rekrutierung-tracker/index.html"
+        url: "tools/rekrutierung-tracker/index.html",
+        image: "tools/rekrutierung-tracker/img.png"
+    },
+    {
+        titel: "Wunschliste",
+        beschreibung: "Dinge, die ich kaufen moechte, priorisiert",
+        url: "tools/wunschliste/index.html",
+        image: "tools/wunschliste/img.jpg"
+    },
+    {
+        titel: "Motorrad-Wartung",
+        beschreibung: "Wartungslog und Kilometerstand-Tracking",
+        url: "tools/motorrad-wartung/index.html",
+        image: "tools/motorrad-wartung/img.png"
     }
 ];
 
@@ -30,9 +30,11 @@ function renderTiles() {
     const grid = document.getElementById("tile-grid");
     grid.innerHTML = TOOLS.map(tool => `
         <a class="tile" href="${tool.url}">
-            <span class="icon">${tool.icon}</span>
-            <h2>${tool.titel}</h2>
-            <p>${tool.beschreibung}</p>
+            <img class="tile-img" src="${tool.image}" alt="${tool.titel}">
+            <div class="tile-content">
+                <h2>${tool.titel}</h2>
+                <p>${tool.beschreibung}</p>
+            </div>
         </a>
     `).join("");
 }
