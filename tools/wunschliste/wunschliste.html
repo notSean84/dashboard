@@ -1,35 +1,58 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Wunschliste</title>
-<link rel="stylesheet" href="../../css/style.css">
-<link rel="stylesheet" href="wunschliste.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Wunschliste</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="wunschliste.css">
 </head>
+
 <body>
-<div class="container">
-    <a class="back-link" href="../../index.html">&larr; Dashboard</a>
-    <h1>Wunschliste</h1>
+    <div class="container">
+        <a class="back-link" href="../../index.html">&larr; Dashboard</a>
+        <h1>Wunschliste</h1>
 
-    <form id="add-form">
-        <input type="text" name="titel" placeholder="Artikel" required>
-        <select name="prioritaet" placeholder="Prio" required>
-            <option value="1">Prio 1</option>
-            <option value="2">Prio 2</option>
-            <option value="3">Prio 3</option>
-            <option value="4">Prio 4</option>
-            <option value="5">Prio 5</option>  
-        </select>
-        <input type="number" name="preis" step="0.05" min="0" placeholder="0.00">
-        <input type="text" name="notiz" placeholder="Notiz">
-        <input type="text" name="link" placeholder="Link">
-        <button type="submit">Hinzufügen</button>
-    </form>
+        <form id="add-form">
+            <input type="text" name="titel" placeholder="Artikel" required>
+            <select name="prioritaet" placeholder="Prio" required>
+                <option value="1">Prio 1</option>
+                <option value="2">Prio 2</option>
+                <option value="3">Prio 3</option>
+                <option value="4">Prio 4</option>
+                <option value="5">Prio 5</option>
+            </select>
+            <input type="number" name="preis" step="0.05" min="0" placeholder="0.00">
+            <input type="text" name="notiz" placeholder="Notiz">
+            <input type="text" name="link" placeholder="Link">
+            <button type="submit">Hinzufügen</button>
+        </form>
 
-    <ul id="list"></ul>
-</div>
+        <ul id="list">
+            <!--Test list !!WICHTIG!! Vor synchronisation löschen
+            <li class="prio-${item.prioritaet} ${item.erledigt ? " erledigt" : "" }">
+                <div class="item-header">
+                    <span>FPV Controller</span>
+                    <span>30.-</span>
+                </div>
+                <span class="item-inner">Muro Meng</span>
+                <div class="item-footer">
+                    <span class="item-link"><a href="${item.link}" target="_blank">Link</a></span>
+                    <span class="actions">
+                        <button>\u2713</button>
+                        <button>\u2715</button>
+                    </span>
+                </div>
+            </li>
+            -->
 
-<script src="wunschliste.js"></script>
+        </ul>
+
+
+    </div>
+
+    <script src="wunschliste.js"></script>
 </body>
+
 </html>
