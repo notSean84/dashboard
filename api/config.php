@@ -5,7 +5,7 @@
  */
 
 const DB_HOST = 'localhost:3306';
-const DB_NAME = 'shug';
+const DB_NAME = 'shug_dashboard';
 const DB_USER = 'shug';
 const DB_PASS = '*PN7Rmm8e!ocme5n';
 
