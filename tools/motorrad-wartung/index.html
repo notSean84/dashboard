@@ -3,14 +3,162 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>motorrad-wartung</title>
+<title>Motorrad-Wartung</title>
 <link rel="stylesheet" href="../../css/style.css">
+<style>
+    .container { max-width: 900px; margin: 0 auto; padding: 24px; }
+    .back-link { display: inline-block; margin-bottom: 16px; color: var(--text-muted); text-decoration: none; }
+
+    .toolbar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }
+    .toolbar h1 { margin: 0; font-size: 1.4rem; }
+    .toolbar-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .toolbar-actions button { padding: 8px 14px; border: none; border-radius: 8px; background: var(--accent); color: #fff; cursor: pointer; font-size: 0.85rem; }
+    .toolbar-actions button.secondary { background: #eef1f5; color: var(--text); }
+
+    .km-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 20px; background: var(--card-bg); border-radius: 10px; padding: 12px 16px; box-shadow: var(--shadow); flex-wrap: wrap; }
+    .km-bar label { color: var(--text-muted); font-size: 0.85rem; }
+    .km-bar input { width: 130px; padding: 6px 8px; border: 1px solid #ddd; border-radius: 8px; }
+    .km-bar button { padding: 6px 12px; border: none; border-radius: 8px; background: var(--accent); color: #fff; cursor: pointer; }
+
+    table { width: 100%; border-collapse: collapse; background: var(--card-bg); border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); }
+    th, td { text-align: left; padding: 10px 12px; font-size: 0.9rem; border-bottom: 1px solid #eee; }
+    th { color: var(--text-muted); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.02em; }
+    tr:last-child td { border-bottom: none; }
+
+    .status { padding: 3px 10px; border-radius: 20px; font-size: 0.78rem; font-weight: 600; white-space: nowrap; }
+    .status-ok { background: #e3f7e8; color: #1a8a3d; }
+    .status-bald { background: #fff2df; color: #b5680a; }
+    .status-faellig { background: #fde3e3; color: #c62828; }
+
+    .actions button { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 0.95rem; margin-right: 6px; }
+
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); align-items: center; justify-content: center; padding: 16px; z-index: 100; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: #fff; border-radius: 14px; padding: 24px; width: 100%; max-width: 440px; max-height: 85vh; overflow-y: auto; position: relative; }
+    .modal h2 { margin-top: 0; font-size: 1.1rem; }
+    .modal-close { position: absolute; top: 14px; right: 14px; background: none; border: none; font-size: 1.1rem; cursor: pointer; color: var(--text-muted); }
+    .modal label { display: block; font-size: 0.8rem; color: var(--text-muted); margin: 12px 0 4px; }
+    .modal input, .modal select, .modal textarea { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; box-sizing: border-box; }
+    .modal textarea { min-height: 70px; resize: vertical; }
+    .modal-buttons { display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px; }
+    .modal-buttons button { padding: 8px 16px; border: none; border-radius: 8px; cursor: pointer; font-size: 0.9rem; }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-secondary { background: #eef1f5; color: var(--text); }
+
+    .typ-list, .verlauf-list { list-style: none; padding: 0; margin: 16px 0 0; }
+    .typ-list li, .verlauf-list li { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 10px 0; border-bottom: 1px solid #eee; font-size: 0.85rem; }
+    .typ-list li:last-child, .verlauf-list li:last-child { border-bottom: none; }
+    .typ-edit-inputs { display: flex; gap: 6px; flex: 1; }
+    .typ-edit-inputs input { padding: 6px; border: 1px solid #ddd; border-radius: 6px; font-size: 0.85rem; }
+    .typ-edit-inputs input[name="bezeichnung"] { flex: 1; }
+    .typ-edit-inputs input[name="intervall_km"] { width: 90px; }
+
+    .empty-hint { color: var(--text-muted); font-size: 0.85rem; padding: 16px 0; }
+
+    @media (max-width: 640px) {
+        table, thead, tbody, th, td, tr { display: block; }
+        thead { display: none; }
+        tr { margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 8px; }
+        td { border: none; padding: 4px 12px; }
+        td::before { content: attr(data-label); font-weight: 600; color: var(--text-muted); display: block; font-size: 0.72rem; text-transform: uppercase; }
+    }
+</style>
 </head>
 <body>
-<div style="max-width:640px;margin:0 auto;padding:24px;">
-    <a href="../../index.html" style="color:var(--text-muted);text-decoration:none;">&larr; Dashboard</a>
-    <h1>TODO: motorrad-wartung</h1>
-    <p>Aufbau folgt dem Muster von tools/wunschliste/ (index.html + eigenes .js + api.php + Tabelle in db/schema.sql).</p>
+<div class="container">
+    <a class="back-link" href="../../index.html">&larr; Dashboard</a>
+
+    <div class="toolbar">
+        <h1>Motorrad-Wartung</h1>
+        <div class="toolbar-actions">
+            <button id="btn-neuer-service">+ Neuer Service</button>
+            <button class="secondary" id="btn-verlauf">Verlauf</button>
+            <button class="secondary" id="btn-typen">Service-Typen</button>
+        </div>
+    </div>
+
+    <div class="km-bar">
+        <label for="aktueller-km">Aktueller Kilometerstand</label>
+        <input type="number" id="aktueller-km" placeholder="z.B. 12500">
+        <button id="btn-km-speichern">Speichern</button>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Service-Typ</th>
+                <th>Intervall</th>
+                <th>Letztes Datum</th>
+                <th>KM letzter Service</th>
+                <th>Rest-KM</th>
+                <th>Status</th>
+                <th>CHF</th>
+            </tr>
+        </thead>
+        <tbody id="overview-body"></tbody>
+    </table>
 </div>
+
+<!-- Popup: Neuer / Service bearbeiten -->
+<div class="modal-overlay" id="modal-service">
+    <div class="modal">
+        <button class="modal-close" data-close="modal-service">&times;</button>
+        <h2 id="service-modal-title">Neuer Service</h2>
+        <form id="service-form">
+            <input type="hidden" name="id">
+
+            <label for="service-datum">Datum</label>
+            <input type="date" id="service-datum" name="datum" required>
+
+            <label for="service-km">KM-Stand</label>
+            <input type="number" id="service-km" name="kilometerstand" required>
+
+            <label for="service-typ">Service-Typ</label>
+            <select id="service-typ" name="art" required></select>
+
+            <label for="service-kosten">Kosten (CHF)</label>
+            <input type="number" step="0.05" id="service-kosten" name="kosten">
+
+            <label for="service-notiz">Notiz</label>
+            <textarea id="service-notiz" name="notiz"></textarea>
+
+            <div class="modal-buttons">
+                <button type="button" class="btn-secondary" data-close="modal-service">Abbrechen</button>
+                <button type="submit" class="btn-primary">Erfassen</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Popup: Verlauf -->
+<div class="modal-overlay" id="modal-verlauf">
+    <div class="modal" style="max-width:640px;">
+        <button class="modal-close" data-close="modal-verlauf">&times;</button>
+        <h2>Verlauf</h2>
+        <ul class="verlauf-list" id="verlauf-list"></ul>
+    </div>
+</div>
+
+<!-- Popup: Service-Typen -->
+<div class="modal-overlay" id="modal-typen">
+    <div class="modal">
+        <button class="modal-close" data-close="modal-typen">&times;</button>
+        <h2>Service-Typen</h2>
+        <form id="typ-form">
+            <label for="typ-bezeichnung">Bezeichnung</label>
+            <input type="text" id="typ-bezeichnung" name="bezeichnung" placeholder="z.B. Oelwechsel" required>
+
+            <label for="typ-intervall">Intervall (KM)</label>
+            <input type="number" id="typ-intervall" name="intervall_km" required>
+
+            <div class="modal-buttons">
+                <button type="submit" class="btn-primary">Hinzufuegen</button>
+            </div>
+        </form>
+        <ul class="typ-list" id="typ-list"></ul>
+    </div>
+</div>
+
+<script src="motorrad-wartung.js"></script>
 </body>
 </html>

@@ -22,7 +22,7 @@ const TOOLS = [
         titel: "Motorrad-Wartung",
         beschreibung: "Wartungslog und Kilometerstand-Tracking",
         url: "tools/motorrad-wartung/index.html",
-        image: "tools/motorrad-wartung/img.png"
+        image: "tools/motorrad-wartung/assets/img.jpg"
     }
 ];
 
