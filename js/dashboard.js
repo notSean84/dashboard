@@ -1,6 +1,18 @@
 // Zentrale Liste der Tools. Neues Tool = neuer Eintrag + neuer Ordner in /tools.
 const TOOLS = [
     {
+        titel: "Motorrad-Wartung",
+        beschreibung: "Wartungslog und Kilometerstand-Tracking",
+        url: "tools/motorrad-wartung/index.html",
+        image: "tools/motorrad-wartung/assets/img.jpg"
+    },
+    {
+        titel: "Wunschliste",
+        beschreibung: "Dinge, die ich kaufen moechte, priorisiert",
+        url: "tools/wunschliste/wunschliste.html",
+        image: "tools/wunschliste/assets/img.jpg"
+    },
+    {
         titel: "Einkaufsliste",
         beschreibung: "Familien-Einkaufsliste mit Menge, Ort etc.",
         url: "tools/einkaufsliste/index.html",
@@ -11,19 +23,8 @@ const TOOLS = [
         beschreibung: "Fortschritt fuer die Vorbereitung tracken",
         url: "tools/rekrutierung-tracker/index.html",
         image: "tools/rekrutierung-tracker/img.png"
-    },
-    {
-        titel: "Wunschliste",
-        beschreibung: "Dinge, die ich kaufen moechte, priorisiert",
-        url: "tools/wunschliste/wunschliste.html",
-        image: "tools/wunschliste/assets/img.jpg"
-    },
-    {
-        titel: "Motorrad-Wartung",
-        beschreibung: "Wartungslog und Kilometerstand-Tracking",
-        url: "tools/motorrad-wartung/index.html",
-        image: "tools/motorrad-wartung/assets/img.jpg"
     }
+
 ];
 
 function renderTiles() {
