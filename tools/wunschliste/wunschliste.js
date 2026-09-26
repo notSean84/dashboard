@@ -12,6 +12,9 @@ function renderList(items) {
     list.innerHTML = items.map(item => `
         <li class="prio-${item.prioritaet} ${item.erledigt ? "erledigt" : ""}">
             <span>${item.titel}</span>
+            <span>${item.preis !== null ? `€ ${item.preis.toFixed(2)}` : ''}</span>
+            <span>${item.notiz || ''}</span>
+            <span>${item.link ? `<a href="${item.link}" target="_blank">Link</a>` : ''}</span>
             <span class="actions">
                 <button onclick="toggleErledigt(${item.id}, ${item.erledigt ? 0 : 1})">
                     ${item.erledigt ? "\u21B6" : "\u2713"}
