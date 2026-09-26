@@ -15,8 +15,8 @@ const TOOLS = [
     {
         titel: "Wunschliste",
         beschreibung: "Dinge, die ich kaufen moechte, priorisiert",
-        url: "tools/wunschliste/index.html",
-        image: "tools/wunschliste/img.jpg"
+        url: "tools/wunschliste/wunschliste.html",
+        image: "tools/wunschliste/assets/img.jpg"
     },
     {
         titel: "Motorrad-Wartung",

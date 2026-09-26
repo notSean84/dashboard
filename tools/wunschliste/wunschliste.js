@@ -44,7 +44,10 @@ document.getElementById("add-form").addEventListener("submit", async (e) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
             titel: form.get("titel"),
-            prioritaet: parseInt(form.get("prioritaet"), 10)
+            prioritaet: parseInt(form.get("prioritaet"), 10),
+            preis: parseFloat(form.get("preis")) || null,
+            notiz: form.get("notiz") || null,
+            link: form.get("link") || null
         })
     });
     e.target.reset();
