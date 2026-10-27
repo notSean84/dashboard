@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guetzli</title>
+<link rel="stylesheet" href="../../css/style.css">
+<style>
+    .container { max-width: 860px; margin: 0 auto; padding: 24px; }
+    .back-link { display: inline-block; margin-bottom: 16px; color: var(--text-muted); text-decoration: none; }
+    input, select, textarea { padding: 8px; border: 1px solid #ddd; border-radius: 8px; font: inherit; }
+    button { padding: 8px 14px; border: none; border-radius: 8px; background: var(--accent); color: #fff; cursor: pointer; font: inherit; }
+    button.sekundaer { background: #e8eaee; color: var(--text); }
+    button.klein { background: none; color: var(--text-muted); padding: 4px 8px; }
+    button.klein:hover { color: var(--text); }
+
+    .stats { color: var(--text-muted); margin: 0 0 16px; }
+    .tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+    .tabs button { background: #e8eaee; color: var(--text); }
+    .tabs button.active { background: var(--accent); color: #fff; }
+    .panel { display: none; }
+    .panel.active { display: block; }
+    .toolbar { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; align-items: center; }
+
+    ul.liste { list-style: none; padding: 0; margin: 0; }
+    .karte { background: var(--card-bg); border-radius: 10px; padding: 12px 16px; margin-bottom: 8px; box-shadow: var(--shadow); border-left: 4px solid var(--accent); }
+    .karte.inaktiv { opacity: 0.55; border-left-color: #cfd2d6; }
+    .karte-kopf { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .karte-titel { font-weight: 600; }
+    .meta { color: var(--text-muted); font-size: 0.85rem; margin-top: 2px; }
+    .karte-aktionen { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .karte-aktionen label { font-size: 0.85rem; color: var(--text-muted); display: flex; align-items: center; gap: 4px; }
+    .faktor-input { width: 64px; padding: 4px 6px; }
+    details { margin-top: 8px; font-size: 0.9rem; }
+    details summary { cursor: pointer; color: var(--text-muted); }
+    details ul { margin: 6px 0 0; padding-left: 20px; }
+    .notiz { font-size: 0.85rem; color: var(--text-muted); margin-top: 6px; font-style: italic; }
+
+    .gruppe h3 { margin: 20px 0 8px; font-size: 0.95rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; }
+    .einkauf-zeile { display: flex; align-items: center; gap: 10px; background: var(--card-bg); border-radius: 10px; padding: 10px 16px; margin-bottom: 6px; box-shadow: var(--shadow); cursor: pointer; }
+    .einkauf-zeile.abgehakt { opacity: 0.45; text-decoration: line-through; }
+    .einkauf-zeile .menge { margin-left: auto; font-weight: 600; white-space: nowrap; }
+
+    table { width: 100%; border-collapse: collapse; background: var(--card-bg); border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); }
+    th, td { padding: 8px 12px; text-align: left; border-bottom: 1px solid #eee; font-size: 0.9rem; }
+    th { color: var(--text-muted); font-weight: 600; }
+    .zutat-form { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+    .zutat-form input[name="name"] { flex: 1; min-width: 160px; }
+    .zutat-form input[name="einheit"] { width: 90px; }
+
+    dialog { border: none; border-radius: var(--radius); padding: 24px; width: min(560px, 94vw); box-shadow: 0 10px 40px rgba(0,0,0,0.25); }
+    dialog::backdrop { background: rgba(0,0,0,0.35); }
+    dialog h2 { margin-top: 0; }
+    .feld { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; }
+    .feld label { font-size: 0.85rem; color: var(--text-muted); }
+    .feld-reihe { display: flex; gap: 12px; }
+    .feld-reihe .feld { flex: 1; }
+    .zutat-zeile { display: flex; gap: 6px; margin-bottom: 6px; align-items: center; }
+    .zutat-zeile select { flex: 1; min-width: 0; }
+    .zutat-zeile input { width: 90px; }
+    .zutat-zeile .einheit { width: 56px; color: var(--text-muted); font-size: 0.9rem; }
+    .neue-zutat { background: #f4f5f7; border-radius: 10px; padding: 12px; margin: 8px 0 12px; display: none; gap: 8px; flex-wrap: wrap; }
+    .neue-zutat.offen { display: flex; }
+    .neue-zutat input[name="nz-name"] { flex: 1; min-width: 140px; }
+    .neue-zutat input[name="nz-einheit"] { width: 80px; }
+    .dialog-aktionen { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
+    .leer { color: var(--text-muted); padding: 16px 0; }
+
+    @media print {
+        .back-link, .tabs, .toolbar, h1, .stats { display: none; }
+        .panel { display: none !important; }
+        #panel-einkauf { display: block !important; }
+        .einkauf-zeile { box-shadow: none; border-bottom: 1px solid #ccc; border-radius: 0; }
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <a class="back-link" href="../../index.html">&larr; Dashboard</a>
+    <h1>Guetzli</h1>
+    <p class="stats" id="stats"></p>
+
+    <div class="tabs">
+        <button data-tab="sorten" class="active">Sorten</button>
+        <button data-tab="einkauf">Einkaufszettel</button>
+        <button data-tab="zutaten">Zutaten</button>
+    </div>
+
+    <!-- Sorten -->
+    <section class="panel active" id="panel-sorten">
+        <div class="toolbar"><button id="btn-neue-sorte">+ Neue Sorte</button></div>
+        <ul class="liste" id="sorten-liste"></ul>
+    </section>
+
+    <!-- Einkaufszettel -->
+    <section class="panel" id="panel-einkauf">
+        <div class="toolbar">
+            <button id="btn-kopieren" class="sekundaer">Als Text kopieren</button>
+            <button id="btn-drucken" class="sekundaer">Drucken</button>
+            <button id="btn-reset-haken" class="sekundaer">Haken zuruecksetzen</button>
+        </div>
+        <div id="einkauf-liste"></div>
+    </section>
+
+    <!-- Zutaten -->
+    <section class="panel" id="panel-zutaten">
+        <table>
+            <thead><tr><th>Zutat</th><th>Einheit</th><th>Kategorie</th><th>In Rezepten</th><th></th></tr></thead>
+            <tbody id="zutaten-tabelle"></tbody>
+        </table>
+        <form class="zutat-form" id="zutat-form">
+            <input type="text" name="name" placeholder="Neue Zutat" required>
+            <input type="text" name="einheit" placeholder="Einheit" list="einheiten" required>
+            <input type="text" name="kategorie" placeholder="Kategorie" list="kategorien">
+            <button type="submit">Hinzufuegen</button>
+        </form>
+    </section>
+</div>
+
+<datalist id="einheiten"></datalist>
+<datalist id="kategorien"></datalist>
+
+<!-- Dialog: Sorte anlegen/bearbeiten -->
+<dialog id="sorte-dialog">
+    <form id="sorte-form" method="dialog">
+        <h2 id="dialog-titel">Neue Sorte</h2>
+        <div class="feld">
+            <label for="f-name">Name</label>
+            <input type="text" id="f-name" required>
+        </div>
+        <div class="feld-reihe">
+            <div class="feld">
+                <label for="f-anzahl">Anzahl Kekse pro Rezept</label>
+                <input type="number" id="f-anzahl" min="0" step="1">
+            </div>
+            <div class="feld">
+                <label for="f-faktor">Faktor (2 = doppelt backen)</label>
+                <input type="number" id="f-faktor" min="0.25" step="0.25" value="1">
+            </div>
+        </div>
+        <div class="feld">
+            <label for="f-link">Rezept-Link</label>
+            <input type="text" id="f-link" placeholder="https://...">
+        </div>
+        <div class="feld">
+            <label for="f-notiz">Notiz</label>
+            <textarea id="f-notiz" rows="2"></textarea>
+        </div>
+
+        <label style="font-size:0.85rem;color:var(--text-muted);">Zutaten (Menge fuer 1x Rezept)</label>
+        <div id="zutat-zeilen" style="margin-top:6px;"></div>
+        <div class="toolbar">
+            <button type="button" class="sekundaer" id="btn-zeile">+ Zutat</button>
+            <button type="button" class="sekundaer" id="btn-neue-zutat">Neue Zutat anlegen</button>
+        </div>
+        <div class="neue-zutat" id="neue-zutat">
+            <input type="text" name="nz-name" placeholder="Name der Zutat">
+            <input type="text" name="nz-einheit" placeholder="Einheit" list="einheiten">
+            <input type="text" name="nz-kategorie" placeholder="Kategorie" list="kategorien">
+            <button type="button" id="btn-nz-speichern">Anlegen</button>
+        </div>
+
+        <div class="dialog-aktionen">
+            <button type="button" class="sekundaer" id="btn-abbrechen">Abbrechen</button>
+            <button type="submit">Speichern</button>
+        </div>
+    </form>
+</dialog>
+
+<script src="guetzli.js"></script>
+</body>
+</html>
