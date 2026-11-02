@@ -12,17 +12,23 @@ const TOOLS = [
         url: "tools/wunschliste/wunschliste.html",
         image: "tools/wunschliste/assets/img.jpg"
     },
-    {
+    /*{
         titel: "Einkaufsliste",
         beschreibung: "Familien-Einkaufsliste mit Menge, Ort etc.",
         url: "tools/einkaufsliste/index.html",
         image: "tools/einkaufsliste/img.jpg"
-    },
+    },*/
     {
         titel: "Rekrutierung",
         beschreibung: "Fortschritt fuer die Vorbereitung tracken",
         url: "tools/rekrutierung-tracker/index.html",
         image: "tools/rekrutierung-tracker/img.png"
+    },
+    {
+        titel: "Guetzli",
+        beschreibung: "Rezepte und Backideen für Weihnachten",
+        url: "tools/guetzli/index.html",
+        image: "tools/guetzli/img.jpg"
     }
 
 ];
